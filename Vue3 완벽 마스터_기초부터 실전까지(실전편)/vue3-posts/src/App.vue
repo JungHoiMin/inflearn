@@ -9,4 +9,3 @@ import TheView from '@/layouts/TheView.vue';
 </template>
 
 <style scoped></style>
-v
