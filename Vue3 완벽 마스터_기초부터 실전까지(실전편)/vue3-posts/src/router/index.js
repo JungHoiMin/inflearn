@@ -1,17 +1,41 @@
 import HomeView from '@/views/HomeView.vue';
 import AboutView from '@/views/AboutView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import PostListView from '@/views/posts/PostListView.vue';
+import PostCreateView from '@/views/posts/PostCreateView.vue';
+import PostDetailView from '@/views/posts/PostDetailView.vue';
+import PostEditView from '@/views/posts/PostEditView.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: HomeView,
   },
   {
     path: '/about',
-    name: 'about',
+    name: 'About',
     component: AboutView,
+  },
+  {
+    path: '/posts',
+    name: 'PostList',
+    component: PostListView,
+  },
+  {
+    path: '/posts/create',
+    name: 'PostCreate',
+    component: PostCreateView,
+  },
+  {
+    path: '/posts/:id',
+    name: 'PostDetail',
+    component: PostDetailView,
+  },
+  {
+    path: '/posts/:id/edit',
+    name: 'PostEdit',
+    component: PostEditView,
   },
 ];
 

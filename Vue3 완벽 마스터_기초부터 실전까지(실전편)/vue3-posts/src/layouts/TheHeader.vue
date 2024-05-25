@@ -1,4 +1,13 @@
-<script setup></script>
+<script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const goPage = () => {
+  router.push({
+    name: 'PostCreate',
+  });
+};
+</script>
 
 <template>
   <header>
@@ -24,18 +33,15 @@
             <li class="nav-item">
               <RouterLink class="nav-link" to="/about">About</RouterLink>
             </li>
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/posts">게시글</RouterLink>
+            </li>
           </ul>
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
+          <div class="d-flex" role="search">
+            <button class="btn btn-outline-light" @click="goPage">
+              글쓰기
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </nav>
