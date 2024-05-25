@@ -1,19 +1,31 @@
 <script setup>
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { getPostById } from '@/api/posts.js';
+import { ref } from 'vue';
 
-const route = useRoute();
+const props = defineProps({
+  id: Number,
+});
+
 const router = useRouter();
-const id = route.params.id;
+const form = ref({});
 
 const goListPage = () => router.push({ name: 'PostList' });
-const goEditPage = () => router.push({ name: 'PostEdit', params: { id } });
+const goEditPage = () =>
+  router.push({ name: 'PostEdit', params: { id: props.id } });
+
+const fetchPost = async () => {
+  const data = await getPostById(props.id);
+  form.value = { ...data };
+};
+fetchPost();
 </script>
 
 <template>
   <div>
-    <h2>제목</h2>
-    <p>내용</p>
-    <p class="text-muted">2020-02-01</p>
+    <h2>{{ form.title }}</h2>
+    <p>{{ form.content }}</p>
+    <p class="text-muted">{{ form.createdAt }}</p>
     <hr class="my-4 g-2" />
     <div class="row">
       <div class="col-auto">

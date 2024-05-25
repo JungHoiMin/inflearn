@@ -8,3 +8,12 @@ export const getPosts = async () => {
     console.log(e);
   }
 };
+
+export const getPostById = async id => {
+  try {
+    const response = await axios.get('/mocks/posts.json');
+    return response.data.find(value => value.id === id);
+  } catch (e) {
+    console.log(e);
+  }
+};
