@@ -3,15 +3,20 @@ import PostItem from '@/components/posts/PostItem.vue';
 import { ref } from 'vue';
 import { getPosts } from '@/api/posts.js';
 import { useRouter } from 'vue-router';
-import PostDetailView from '@/views/posts/PostDetailView.vue'
-import AppCard from '@/components/AppCard.vue'
+import PostDetailView from '@/views/posts/PostDetailView.vue';
+import AppCard from '@/components/AppCard.vue';
 
 const router = useRouter();
 
 const posts = ref([]);
 
 const fetchPosts = async () => {
-  posts.value = await getPosts();
+  try {
+    const { data } = await getPosts();
+    posts.value = data;
+  } catch (error) {
+    console.error('error: ', error);
+  }
 };
 fetchPosts();
 

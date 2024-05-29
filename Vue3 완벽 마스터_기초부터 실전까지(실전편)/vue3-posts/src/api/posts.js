@@ -1,19 +1,21 @@
 import axios from 'axios';
 
-export const getPosts = async () => {
-  try {
-    const response = await axios.get('/mocks/posts.json');
-    return response.data;
-  } catch (e) {
-    console.log(e);
-  }
+export const getPosts = () => {
+  return axios.get('http://localhost:5000/posts');
 };
 
-export const getPostById = async id => {
-  try {
-    const response = await axios.get('/mocks/posts.json');
-    return response.data.find(value => value.id === id);
-  } catch (e) {
-    console.log(e);
-  }
+export const getPostById = id => {
+  return axios.get(`http://localhost:5000/posts/${id}`);
+};
+
+export const createPost = data => {
+  return axios.post('http://localhost:5000/posts', data);
+};
+
+export const updatePost = (id, data) => {
+  return axios.put(`http://localhost:5000/posts/${id}`, data);
+};
+
+export const deletePost = id => {
+  return axios.delete(`http://localhost:5000/posts/${id}`);
 };
