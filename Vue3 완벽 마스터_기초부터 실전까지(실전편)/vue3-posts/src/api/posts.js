@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getPosts = () => {
-  return axios.get('http://localhost:5000/posts');
+export const getPosts = params => {
+  return axios.get('http://localhost:5000/posts', { params });
 };
 
 export const getPostById = id => {
