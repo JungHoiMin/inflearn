@@ -1,10 +1,10 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "제목1",
+      "title": "제목1123",
       "content": "내용1",
-      "createdAt": "2024-01-05"
+      "createdAt": "2024-01-05",
+      "id": 1
     },
     {
       "id": 2,

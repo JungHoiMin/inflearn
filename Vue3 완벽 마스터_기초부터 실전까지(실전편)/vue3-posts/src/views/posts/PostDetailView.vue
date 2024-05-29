@@ -4,7 +4,7 @@ import { deletePost, getPostById } from '@/api/posts.js';
 import { ref } from 'vue';
 
 const props = defineProps({
-  id: Number,
+  id: String,
 });
 
 const router = useRouter();
