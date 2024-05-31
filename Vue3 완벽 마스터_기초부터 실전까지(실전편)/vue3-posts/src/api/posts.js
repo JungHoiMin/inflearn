@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { posts } from '@/api/index.js'
+import { posts } from '@/api/index.js';
 
 export const getPosts = params => {
   return posts.get('/', { params });
