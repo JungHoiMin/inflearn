@@ -6,7 +6,7 @@ export const getPosts = params => {
 };
 
 export const getPostById = id => {
-  return posts.get(id);
+  return posts.get(`${id}`);
 };
 
 export const createPost = data => {
@@ -14,9 +14,9 @@ export const createPost = data => {
 };
 
 export const updatePost = (id, data) => {
-  return posts.put(id, data);
+  return posts.put(`${id}`, data);
 };
 
 export const deletePost = id => {
-  return posts.delete(id);
+  return posts.delete(`${id}`);
 };
