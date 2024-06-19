@@ -4,8 +4,16 @@ import router from '@/router/index.js';
 
 import { createApp } from 'vue';
 import App from './App.vue';
+import { funcPlugins } from '@/plugins/func.js';
+import { objectPlugins } from '@/plugins/obj.js';
+import person from '@/plugins/person.js';
 
-createApp(App).use(router).mount('#app');
+const app = createApp(App);
+app.use(funcPlugins);
+app.use(objectPlugins, { name: '짐코딩' });
+app.use(person, { name: '홍길동' });
+app.use(router);
+app.mount('#app');
 
 import 'bootstrap/dist/js/bootstrap.js';
 
