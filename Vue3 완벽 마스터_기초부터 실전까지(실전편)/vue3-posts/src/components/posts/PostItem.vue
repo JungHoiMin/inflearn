@@ -1,6 +1,5 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
-import AppCard from '@/components/AppCard.vue';
 
 defineProps({
   title: {

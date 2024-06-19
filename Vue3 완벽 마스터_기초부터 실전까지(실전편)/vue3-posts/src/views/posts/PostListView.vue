@@ -4,9 +4,6 @@ import { ref, computed, watchEffect } from 'vue';
 import { getPosts } from '@/api/posts.js';
 import { useRouter } from 'vue-router';
 import PostDetailView from '@/views/posts/PostDetailView.vue';
-import AppCard from '@/components/AppCard.vue';
-import AppPagination from '@/components/AppPagination.vue';
-import AppGrid from '@/components/AppGrid.vue';
 import PostFilter from '@/components/posts/PostFilter.vue';
 import PostModal from '@/components/posts/PostModal.vue';
 
