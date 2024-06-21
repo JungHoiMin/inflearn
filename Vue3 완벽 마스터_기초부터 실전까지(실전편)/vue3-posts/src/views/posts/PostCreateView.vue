@@ -3,8 +3,10 @@ import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { createPost } from '@/api/posts.js';
 import PostForm from '@/components/posts/PostForm.vue';
+import { useAlert } from '@/composables/useAlert.js';
 
 const router = useRouter();
+const { vSuccess } = useAlert();
 const form = ref({
   title: null,
   content: null,
@@ -13,7 +15,8 @@ const save = async () => {
   try {
     const data = { ...form.value, createdAt: Date.now() };
     await createPost(data);
-    await router.push({ name: 'PostList' });
+    // await router.push({ name: 'PostList' });
+    vSuccess('등록이 완료되었습니다.');
   } catch (error) {
     console.error('error: ', error);
   }
