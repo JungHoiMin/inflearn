@@ -7,10 +7,12 @@ import App from './App.vue';
 import globalComponents from '@/plugins/global-components';
 import 'bootstrap/dist/js/bootstrap.js';
 import globalDirectives from '@/plugins/global-directives.js'
+import dayjs from '@/plugins/dayjs.js'
 
 const app = createApp(App);
 app.use(globalComponents);
 app.use(globalDirectives);
+app.use(dayjs);
 app.use(router);
 app.mount('#app');
 

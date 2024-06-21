@@ -45,7 +45,9 @@ const remove = async () => {
   <div>
     <h2>{{ post.title }}</h2>
     <p>{{ post.content }}</p>
-    <p class="text-muted">{{ post.createdAt }}</p>
+    <p class="text-muted">
+      {{ $dayjs(post.createdAt).format('YYYY. MM. DD HH:mm:ss') }}
+    </p>
     <hr class="my-4 g-2" />
     <div class="row">
       <div class="col-auto">

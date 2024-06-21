@@ -1,7 +1,7 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits, inject, computed } from 'vue';
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     required: true,
@@ -16,13 +16,17 @@ defineProps({
   },
 });
 defineEmits(['modal']);
+const dayjs = inject('dayjs');
+const createdDate = computed(() =>
+  dayjs(props.createdAt).format('YYYY. MM. DD HH:mm:ss'),
+);
 </script>
 
 <template>
   <AppCard>
     <h5 class="card-title">{{ title }}</h5>
     <p class="card-text">{{ content }}</p>
-    <p class="text-muted">{{ createdAt }}</p>
+    <p class="text-muted">{{ createdDate }}</p>
     <template #footer>
       <div class="d-flex flex-row-reverse">
         <button class="btn p-0" @click.stop="$emit('modal')">
