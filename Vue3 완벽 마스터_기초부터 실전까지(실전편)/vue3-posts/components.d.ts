@@ -9,7 +9,9 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppAlert: typeof import ('@/components/app/AppAlert')['default']
     AppCard: typeof import ('@/components/app/AppCard')['default']
+    AppError: typeof import('./src/components/app/AppError.vue')['default']
     AppGrid: typeof import ('@/components/app/AppGrid')['default']
+    AppLoading: typeof import('./src/components/app/AppLoading.vue')['default']
     AppModal: typeof import ('@/components/app/AppModal')['default']
     AppPagination: typeof import ('@/components/app/AppPagination')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -9,6 +9,8 @@ const props = defineProps({
 
 const router = useRouter();
 const post = ref({});
+const error = ref(null);
+const loading = ref(false);
 
 const goListPage = () => router.push({ name: 'PostList' });
 const goEditPage = () =>
@@ -16,10 +18,13 @@ const goEditPage = () =>
 
 const fetchPost = async () => {
   try {
+    loading.value = true;
     const { data } = await getPostById(props.id);
     setPost(data);
-  } catch (error) {
-    console.error('error: ', error);
+  } catch (err) {
+    error.value = err;
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -30,25 +35,35 @@ const setPost = ({ title, content, createdAt }) => {
 };
 fetchPost();
 
+const removeError = ref(null);
+const removeLoading = ref(false);
 const remove = async () => {
   try {
     if (confirm('삭제 하시겠습니까?') === false) return;
+    removeLoading.value = true;
     await deletePost(props.id);
     await router.push({ name: 'PostList' });
-  } catch (error) {
-    console.error('error: ', error);
+  } catch (err) {
+    removeError.value = err;
+  } finally {
+    removeLoading.value = false;
   }
 };
 </script>
 
 <template>
-  <div>
+  <AppLoading v-if="loading" />
+
+  <AppError v-else-if="error" :message="error.message" />
+
+  <div v-else>
     <h2>{{ post.title }}</h2>
     <p>{{ post.content }}</p>
     <p class="text-muted">
       {{ $dayjs(post.createdAt).format('YYYY. MM. DD HH:mm:ss') }}
     </p>
     <hr class="my-4 g-2" />
+    <AppError v-if="removeError" :message="removeError.message" />
     <div class="row">
       <div class="col-auto">
         <button class="btn btn-outline-dark">이전글</button>
@@ -66,7 +81,21 @@ const remove = async () => {
         </button>
       </div>
       <div class="col-auto">
-        <button class="btn btn-outline-danger" @click="remove">삭제</button>
+        <button
+          class="btn btn-outline-danger"
+          type="submit"
+          :disabled="removeLoading"
+          @click="remove"
+        >
+          <template v-if="removeLoading">
+            <span
+              class="spinner-grow spinner-grow-sm"
+              aria-hidden="true"
+            ></span>
+            <span class="visually-hidden" role="status">Loading...</span>
+          </template>
+          <template v-else> 삭제 </template>
+        </button>
       </div>
     </div>
   </div>

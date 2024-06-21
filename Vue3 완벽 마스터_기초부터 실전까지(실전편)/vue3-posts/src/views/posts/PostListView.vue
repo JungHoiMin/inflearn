@@ -10,6 +10,8 @@ import PostModal from '@/components/posts/PostModal.vue';
 const router = useRouter();
 
 const posts = ref([]);
+const error = ref(null);
+const loading = ref(false);
 const params = ref({
   _sort: 'createdAt',
   _order: 'desc',
@@ -24,11 +26,15 @@ const pageCount = computed(() =>
 );
 const fetchPosts = async () => {
   try {
+    loading.value = true;
     const { data, headers } = await getPosts(params.value);
     posts.value = data;
     totalCount.value = +headers['x-total-count'];
-  } catch (error) {
-    console.error('error: ', error);
+  } catch (err) {
+    console.error('error: ', err);
+    error.value = err;
+  } finally {
+    loading.value = false;
   }
 };
 watchEffect(fetchPosts);
@@ -64,23 +70,29 @@ const openModal = ({ title, content, createdAt }) => {
       v-model:limit="params._limit"
     />
     <hr class="my-4" />
-    <AppGrid :items="posts" col-class="col-4">
-      <template v-slot="{ item: post }">
-        <PostItem
-          :title="post.title"
-          :content="post.content"
-          :created-at="post.createdAt"
-          @click="goPage(post.id)"
-          @modal="openModal(post)"
-        />
-      </template>
-    </AppGrid>
-    <AppPagination
-      :current-page="params.page"
-      :page-count="pageCount"
-      @page="page => (params._page = page)"
-    />
 
+    <AppLoading v-if="loading" />
+
+    <AppError v-else-if="error" :message="error.message" />
+
+    <template v-else>
+      <AppGrid :items="posts" col-class="col-4">
+        <template v-slot="{ item: post }">
+          <PostItem
+            :title="post.title"
+            :content="post.content"
+            :created-at="post.createdAt"
+            @click="goPage(post.id)"
+            @modal="openModal(post)"
+          />
+        </template>
+      </AppGrid>
+      <AppPagination
+        :current-page="params.page"
+        :page-count="pageCount"
+        @page="page => (params._page = page)"
+      />
+    </template>
     <Teleport to="#modal">
       <PostModal
         v-model="show"
