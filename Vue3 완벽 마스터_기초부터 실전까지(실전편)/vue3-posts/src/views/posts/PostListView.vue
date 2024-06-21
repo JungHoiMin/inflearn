@@ -1,17 +1,14 @@
 <script setup>
 import PostItem from '@/components/posts/PostItem.vue';
-import { ref, computed, watchEffect } from 'vue';
-import { getPosts } from '@/api/posts.js';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import PostDetailView from '@/views/posts/PostDetailView.vue';
 import PostFilter from '@/components/posts/PostFilter.vue';
 import PostModal from '@/components/posts/PostModal.vue';
+import { useAxios } from '@/composables/useAxios.js';
 
 const router = useRouter();
 
-const posts = ref([]);
-const error = ref(null);
-const loading = ref(false);
 const params = ref({
   _sort: 'createdAt',
   _order: 'desc',
@@ -19,25 +16,17 @@ const params = ref({
   _limit: 3,
   title_like: '',
 });
+const {
+  response,
+  data: posts,
+  loading,
+  error,
+} = useAxios('/posts', { method: 'get', params });
 // pagination
-const totalCount = ref(0);
+const totalCount = computed(() => +response.value.headers['x-total-count']);
 const pageCount = computed(() =>
   Math.ceil(totalCount.value / params.value._limit),
 );
-const fetchPosts = async () => {
-  try {
-    loading.value = true;
-    const { data, headers } = await getPosts(params.value);
-    posts.value = data;
-    totalCount.value = +headers['x-total-count'];
-  } catch (err) {
-    console.error('error: ', err);
-    error.value = err;
-  } finally {
-    loading.value = false;
-  }
-};
-watchEffect(fetchPosts);
 
 const goPage = id => {
   router.push({

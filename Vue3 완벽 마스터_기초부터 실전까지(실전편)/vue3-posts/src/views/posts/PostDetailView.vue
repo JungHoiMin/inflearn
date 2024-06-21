@@ -1,54 +1,45 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import { deletePost, getPostById } from '@/api/posts.js';
+import { deletePost } from '@/api/posts.js';
 import { ref } from 'vue';
+import { useAxios } from '@/composables/useAxios.js';
+import { useAlert } from '@/composables/useAlert.js';
 
 const props = defineProps({
   id: [String, Number],
 });
 
 const router = useRouter();
-const post = ref({});
-const error = ref(null);
-const loading = ref(false);
+const { vAlert, vSuccess } = useAlert();
+const { data: post, loading, error } = useAxios(`/posts/${props.id}`);
+
+const {
+  loading: removeLoading,
+  error: removeError,
+  execute,
+} = useAxios(
+  `/posts/${props.id}`,
+  { method: 'delete' },
+  {
+    immediate: false,
+    onSuccess: async () => {
+      vSuccess('삭제가 완료되었습니다.');
+      await router.push({ name: 'PostList' });
+    },
+    onError: err => {
+      vAlert(err.message);
+    },
+  },
+);
+
+const remove = async () => {
+  if (confirm('삭제 하시겠습니까?') === false) return;
+  execute();
+};
 
 const goListPage = () => router.push({ name: 'PostList' });
 const goEditPage = () =>
   router.push({ name: 'PostEdit', params: { id: props.id } });
-
-const fetchPost = async () => {
-  try {
-    loading.value = true;
-    const { data } = await getPostById(props.id);
-    setPost(data);
-  } catch (err) {
-    error.value = err;
-  } finally {
-    loading.value = false;
-  }
-};
-
-const setPost = ({ title, content, createdAt }) => {
-  post.value.title = title;
-  post.value.content = content;
-  post.value.createdAt = createdAt;
-};
-fetchPost();
-
-const removeError = ref(null);
-const removeLoading = ref(false);
-const remove = async () => {
-  try {
-    if (confirm('삭제 하시겠습니까?') === false) return;
-    removeLoading.value = true;
-    await deletePost(props.id);
-    await router.push({ name: 'PostList' });
-  } catch (err) {
-    removeError.value = err;
-  } finally {
-    removeLoading.value = false;
-  }
-};
 </script>
 
 <template>
@@ -60,7 +51,7 @@ const remove = async () => {
     <h2>{{ post.title }}</h2>
     <p>{{ post.content }}</p>
     <p class="text-muted">
-      {{ $dayjs(post.createdAt).format('YYYY. MM. DD HH:mm:ss') }}
+      <!--      {{ $dayjs(post.createdAt).format('YYYY. MM. DD HH:mm:ss') }}-->
     </p>
     <hr class="my-4 g-2" />
     <AppError v-if="removeError" :message="removeError.message" />
