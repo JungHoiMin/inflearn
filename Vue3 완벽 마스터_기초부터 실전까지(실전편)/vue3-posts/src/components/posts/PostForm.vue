@@ -11,6 +11,8 @@ defineEmits(['update:title', 'update:content']);
     <div class="mb-3">
       <label for="title" class="form-label">제목</label>
       <input
+        v-focus
+        v-color="'blue'"
         :value="title"
         @input="$emit('update:title', $event.target.value)"
         type="text"
