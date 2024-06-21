@@ -1,17 +1,21 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import { deletePost } from '@/api/posts.js';
-import { ref } from 'vue';
+import { computed, toRef, toRefs } from 'vue'
 import { useAxios } from '@/composables/useAxios.js';
 import { useAlert } from '@/composables/useAlert.js';
+import { useNumber } from '@/composables/useNumber.js';
 
 const props = defineProps({
   id: [String, Number],
 });
 
 const router = useRouter();
+// const idRef = toRef(props, 'id');
+const { id: idRef } = toRefs(props);
+const { isOdd, isEven } = useNumber(idRef);
 const { vAlert, vSuccess } = useAlert();
-const { data: post, loading, error } = useAxios(`/posts/${props.id}`);
+const url = computed(() => `/posts/${props.id}`);
+const { data: post, loading, error } = useAxios(url);
 
 const {
   loading: removeLoading,
@@ -49,6 +53,7 @@ const goEditPage = () =>
 
   <div v-else>
     <h2>{{ post.title }}</h2>
+    <p>id: {{ props.id }}, isOdd: {{ isOdd }}</p>
     <p>{{ post.content }}</p>
     <p class="text-muted">
       <!--      {{ $dayjs(post.createdAt).format('YYYY. MM. DD HH:mm:ss') }}-->

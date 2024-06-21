@@ -9,6 +9,11 @@ import { useAxios } from '@/composables/useAxios.js';
 
 const router = useRouter();
 
+const previewId = ref(null);
+const selectPreview = id => {
+  previewId.value = id;
+};
+
 const params = ref({
   _sort: 'createdAt',
   _order: 'desc',
@@ -73,6 +78,7 @@ const openModal = ({ title, content, createdAt }) => {
             :created-at="post.createdAt"
             @click="goPage(post.id)"
             @modal="openModal(post)"
+            @preview="selectPreview(post.id)"
           />
         </template>
       </AppGrid>
@@ -91,10 +97,10 @@ const openModal = ({ title, content, createdAt }) => {
       />
     </Teleport>
 
-    <template v-if="posts && posts.length > 0">
+    <template v-if="previewId">
       <hr class="my-5" />
       <AppCard>
-        <PostDetailView :id="posts[0].id" />
+        <PostDetailView :id="previewId" />
       </AppCard>
     </template>
   </div>

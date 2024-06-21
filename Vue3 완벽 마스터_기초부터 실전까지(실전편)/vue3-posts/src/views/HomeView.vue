@@ -8,7 +8,7 @@ export default {
 </script>
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { reactive, ref, toRef, toRefs } from 'vue'
 
 const router = useRouter();
 const goAboutPage = () => {
@@ -18,6 +18,20 @@ const goAboutPage = () => {
 };
 
 const items = ref(['사과', '딸기', '포도', '바나나']);
+
+const position = reactive({
+  x: 100,
+  y: 1000,
+});
+
+// const x = ref(position.x);
+// const y = ref(position.y);
+// console.log('x: ', typeof x.value);
+// console.log('y: ', typeof y.value);
+
+// const x = toRef(position, 'x');
+// const y = toRef(position, 'y');
+const { x, y } = toRefs(position);
 </script>
 
 <template>
@@ -31,6 +45,8 @@ const items = ref(['사과', '딸기', '포도', '바나나']);
       <AppCard>{{ item }}</AppCard>
     </AppGrid>
     <hr class="my-4" />
+    <h2>{{ position }}</h2>
+    <h2>x: {{ x }}, y: {{ y }}</h2>
   </div>
 </template>
 
