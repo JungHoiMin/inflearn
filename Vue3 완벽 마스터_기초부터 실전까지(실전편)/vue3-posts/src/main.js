@@ -6,14 +6,16 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import globalComponents from '@/plugins/global-components';
 import 'bootstrap/dist/js/bootstrap.js';
-import globalDirectives from '@/plugins/global-directives.js'
-import dayjs from '@/plugins/dayjs.js'
+import globalDirectives from '@/plugins/global-directives.js';
+import dayjs from '@/plugins/dayjs.js';
+import { createPinia } from 'pinia';
 
 const app = createApp(App);
 app.use(globalComponents);
 app.use(globalDirectives);
 app.use(dayjs);
 app.use(router);
+app.use(createPinia());
 app.mount('#app');
 
 // console.log('MODE: ', import.meta.env.MODE);
