@@ -3,7 +3,12 @@ defineProps({
   title: String,
   limit: Number,
 });
-defineEmits(['update:title', 'update:limit']);
+const emit = defineEmits(['update:title', 'update:limit']);
+const changeTitle = e => {
+  setTimeout(() => {
+    emit('update:title', e.target.value);
+  }, 500);
+};
 </script>
 
 <template>
@@ -12,7 +17,7 @@ defineEmits(['update:title', 'update:limit']);
       <div class="col">
         <input
           :value="title"
-          @input="$emit('update:title', $event.target.value)"
+          @input="changeTitle"
           type="text"
           class="form-control"
           placeholder="제목으로 검색해주세요."
@@ -24,9 +29,9 @@ defineEmits(['update:title', 'update:limit']);
           @input="$emit('update:limit', $event.target.value)"
           class="form-select"
         >
-          <option value="3">3개씩 보기</option>
           <option value="6">6개씩 보기</option>
-          <option value="9">9개씩 보기</option>
+          <option value="12">12개씩 보기</option>
+          <option value="18">18개씩 보기</option>
         </select>
       </div>
     </div>
