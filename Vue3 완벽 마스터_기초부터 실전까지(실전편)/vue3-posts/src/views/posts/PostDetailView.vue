@@ -1,6 +1,6 @@
 <script setup>
-import { useRouter } from 'vue-router';
-import { computed, toRef, toRefs } from 'vue'
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from 'vue-router';
+import { computed, toRef, toRefs } from 'vue';
 import { useAxios } from '@/composables/useAxios.js';
 import { useAlert } from '@/composables/useAlert.js';
 import { useNumber } from '@/composables/useNumber.js';
@@ -44,8 +44,21 @@ const remove = async () => {
 const goListPage = () => router.push({ name: 'PostList' });
 const goEditPage = () =>
   router.push({ name: 'PostEdit', params: { id: props.id } });
-</script>
 
+onBeforeRouteUpdate(() => {
+  console.log('onBeforeRouteUpdate');
+});
+onBeforeRouteLeave(() => {
+  console.log('onBeforeRouteLeave');
+});
+</script>
+<script>
+export default {
+  beforeRouteEnter() {
+    console.log('beforeRouteEnter');
+  },
+};
+</script>
 <template>
   <AppLoading v-if="loading" />
 
@@ -62,7 +75,9 @@ const goEditPage = () =>
     <AppError v-if="removeError" :message="removeError.message" />
     <div class="row">
       <div class="col-auto">
-        <button class="btn btn-outline-dark">이전글</button>
+        <button class="btn btn-outline-dark" @click="$router.push('/posts/10')">
+          이전글
+        </button>
       </div>
       <div class="col-auto">
         <button class="btn btn-outline-dark">다음글</button>
